@@ -99,15 +99,15 @@ function tearDownDb() {
 }
 
 function getToken(auth) {
-        return chai.request(app)
-            .post('/api/auth/login')
-            .send(userCredentials)
-            .then(function(res){
-                auth = {};
-                auth.token = res.body.authToken;
-                console.log('auth', auth);
-                return auth;
-            })
+    return chai.request(app)
+        .post('/api/auth/login')
+        .send(userCredentials)
+        .then(function (res) {
+            auth = {};
+            auth.token = res.body.authToken;
+            console.log('auth', auth);
+            return auth;
+        })
 }
 
 function registerAndGetToken() {
@@ -128,18 +128,17 @@ function registerAndGetToken() {
 describe('Destination Diary API', function () {
 
 
-    before(function () {
+    before(function(){
 
-        tearDownDb();
+        return runServer(TEST_DATABASE_URL);
 
-        registerAndGetToken();
+        // registerAndGetToken();
         // console.log(`auth.token`, auth.token);
 
         // console.log(auth.token);
         // auth.token = res.body.token;
 
-        return runServer(TEST_DATABASE_URL);
-    });
+    })
     beforeEach(function () {
         return seedDestinationData();
     })
@@ -150,7 +149,7 @@ describe('Destination Diary API', function () {
         return closeServer();
     });
 
-    // describe('Protected destinations endpoint', function () {
+    describe('Protected destinations endpoint', function () {
 
     //     it('should respond with JSON array', function (done) {
     //         return chai.request(app)
@@ -166,45 +165,39 @@ describe('Destination Diary API', function () {
     //     });
     // });
 
-    describe('User GET endpoint', function () {
+    //     describe('User GET endpoint', function () {
 
-        it('Should return all destinations for the current user', function () {
+    //         it('Should return all destinations for the current user', function () {
+    //             return chai.request(app)
+    //                 .get('/api/destinations')
+    //                 .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsIm5hbWUiOiJUZXN0In0sImlhdCI6MTUyOTY1ODU0MywiZXhwIjoxNTMwMjYzMzQzLCJzdWIiOiJ0ZXN0In0.fkB_PLkAADlAXH7nnV9C6rJzPOR8QiV64uL6dA0XRNA')
+    //                 .then(function (res) {
+    //                     expect(res).to.have.status(200);
+    //                     expect(res).to.be.a('object');
+    //                     expect(res.body).to.have.length.of.at.least(1);
+    //                     //     return Destination.count();
+    //                     // })
+    //                     // .then(function (count) {
+    //                     //     expect(res.body).to.have.length.of(count);
+    //                 })
+    //         })
+
+    //     });
+    })
+
+    describe('Public GET endpoint', function () {
+
+        it('Should return all published destinations', function () {
             return chai.request(app)
-                .get('/api/destinations')
-                .set('Authorization', 'bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsIm5hbWUiOiJUZXN0In0sImlhdCI6MTUyOTY1ODU0MywiZXhwIjoxNTMwMjYzMzQzLCJzdWIiOiJ0ZXN0In0.fkB_PLkAADlAXH7nnV9C6rJzPOR8QiV64uL6dA0XRNA')
+                .get('/api/destinations/public')
                 .then(function (res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     expect(res.body).to.have.length.of.at.least(1);
-                    //     return Destination.count();
-                    // })
-                    // .then(function (count) {
-                    //     expect(res.body).to.have.length.of(count);
                 })
-        })
+        });
 
     });
-})
-
-//     describe('Public GET endpoint', function () {
-
-//         it('Should return all published destinations', function () {
-//             return chai.request(app)
-//                 .get('/api/destinations/public')
-//                  .set('Authorization', 'bearer ' + auth.token)
-//                 .then(function (res) {
-//                     console.log(`res equals`, res);
-//                     expect(res).to.have.status(200);
-//                     expect(res).to.be.a.('array');
-//                     expect(res.body).to.have.length.of.at.least(1);
-//                     return Destination.count();
-//                 })
-//                 .then(function (count) {
-//                     expect(res.body).to.have.length.of(count);
-//                 })
-//         });
-
-//     });
 
 
 //     describe('User POST endpoint', function () {
@@ -235,3 +228,4 @@ describe('Destination Diary API', function () {
 //     });
 
 // });
+});
