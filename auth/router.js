@@ -38,4 +38,4 @@ router.get('/app_protected', jwtAuth, (req, res) => {
   res.json({ authToken });
 });
 
-module.exports = { router };
+module.exports = { router, createAuthToken };

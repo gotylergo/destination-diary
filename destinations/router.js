@@ -166,7 +166,7 @@ destinationsRouter.delete('/id/:id', [jsonParser, jwtAuth], (req, res) => {
         .catch(err => res.status(500).send({ message: 'Internal server error.', error: err}));
     }
     Destination.findOneAndRemove({ _id: req.params.id })
-        .then(dest => res.send(`${req.params.id} deleted.`))
+        .then(dest => res.status(204).send(`${req.params.id} deleted.`))
         .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
