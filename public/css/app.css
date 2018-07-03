@@ -84,6 +84,10 @@ h1 {
 .new-dest-card {
     background: darkgray;
 }
+input::placeholder {
+    color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+}
 
 .dest-card {
     background: lightgreen;
