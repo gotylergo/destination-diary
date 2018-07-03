@@ -46,28 +46,33 @@ $("body").on("click", "#register-success > button", function (e) {
 
 $("#register-form").submit(function (e) {
     e.preventDefault();
-    let newUser = {
-        "username": $("#new-username").val(),
-        "password": $("#new-password").val(),
-        "name": $("#new-name").val()
-    };
+    if ($("#new-password").val() !== $("#confirm-password").val()) {
+        $("#register-error").html("Passwords do not match. Try again.");
+        $("#new-password").val("");
+        $("#confirm-password").val("");
+    } else {
+        let newUser = {
+            "username": $("#new-username").val(),
+            "password": $("#new-password").val(),
+            "name": $("#new-name").val()
+        };
 
-    $.ajax({
-        type: "POST",
-        url: "/api/users",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(newUser),
-        success: function (data, textStatus, jqXHR) {
-            $("#register-form input").val("");
-            $("#register-form").addClass("hide-me");
-            $("#register-success").removeClass("hide-me");
-        },
-        error: function (data, textStatus, errorThrown) {
-            $("#register-error").html(`${data.responseJSON.location} - ${data.responseJSON.message}`);
-        }
-    });
-
+        $.ajax({
+            type: "POST",
+            url: "/api/users",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(newUser),
+            success: function (data, textStatus, jqXHR) {
+                $("#register-form input").val("");
+                $("#register-form").addClass("hide-me");
+                $("#register-success").removeClass("hide-me");
+            },
+            error: function (data, textStatus, errorThrown) {
+                $("#register-error").html(`${data.responseJSON.location} - ${data.responseJSON.message}`);
+            }
+        });
+    }
 });
 
 // Login form
