@@ -85,8 +85,21 @@ input::placeholder {
     opacity: 1;
 }
 
-.dest-card {
+.published-card {
     background: lightgreen;
+}
+.published-card .published-check {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 2em;
+}
+
+.dest-card {
+    background: lightseagreen;
+}
+.dest-card .published-check {
+    display: none;
 }
 
 .activities-list li {
