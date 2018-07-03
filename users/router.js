@@ -81,6 +81,8 @@ router.post('/', jsonParser, (req, res) => {
     // Username and password come in pre-trimmed, otherwise we throw an error
     // before this
     name = name.trim();
+    // Username should be case insensitive
+    username = username.toLowerCase();
 
     return User.find({ username })
         .count()
