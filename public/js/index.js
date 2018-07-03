@@ -2,6 +2,31 @@
 
 $(function () {
 
+    const myToken = sessionStorage.getItem("token");
+    function verifyLogin() {
+        $.ajax({
+            url: `/api/auth/app_protected`,
+            type: 'GET',
+            headers: { 'authorization': `Bearer ${myToken}` },
+            success: function (data) {
+                console.log("Token valid.");
+                console.log(myToken);
+                $(".sign-in-button").addClass("hide-me");
+                $(".user-home-button").removeClass("hide-me");
+                $(".sign-out-button").removeClass("hide-me");
+            },
+
+            // If no logged in user, 
+
+            error: function () {
+                console.log("Token invalid!");
+            }
+        });
+    }
+
+    verifyLogin();
+
+
     // Display published destination albums
 
     function loadHomepage() {
@@ -59,6 +84,13 @@ $(function () {
     }
     loadHomepage();
 
+});
+
+// Go to user home when My Destinations is clicked
+
+$("body").on("click", ".user-home-button", function (e) {
+    e.preventDefault();
+    window.location.replace("/app.html");
 });
 
 // Display Help Modal

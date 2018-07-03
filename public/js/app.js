@@ -25,13 +25,6 @@ $(function () {
         });
     }
 
-    // Clear session token to sign the user out and redirect to the homepage
-
-    $(".sign-out-button ").on("click", function (e) {
-        e.preventDefault();
-        sessionStorage.setItem("token", "");
-        window.location.replace("/");
-    })
 
     // Open help modal
 

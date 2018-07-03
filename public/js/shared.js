@@ -10,9 +10,17 @@ $("body").on("click", ".close-card-button", function (e) {
     $("#login-error, #register-error").html("");
 });
 
+// Clear session token to sign the user out and redirect to the homepage
+
+$(".sign-out-button ").on("click", function (e) {
+    e.preventDefault();
+    sessionStorage.setItem("token", "");
+    window.location.replace("/");
+})
+
 // Login modal
 
-$("body").on("click", ".login-link", function (e) {
+$("body").on("click", ".sign-in-button", function (e) {
     e.preventDefault();
     $(".login-modal").removeClass("hide-me");
 });
