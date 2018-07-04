@@ -20,15 +20,24 @@ chai.use(chaiHttp);
 
 // Seed database with random data
 
-let seedData = [],
-    total = 10,
-    counter = 0;
+// let seedData = [],
+//     total = 10,
+//     counter = 0;
 
-function seedDestinationData() {
+function seedDestinationData_old() {
     console.info('Seeding destination data');
         for (let i = 0; i <= total; i++) {
         generateDestinationData();
     }
+}
+
+function seedDestinationData() {
+    console.info('Seeding destination data');
+    let seedData = [];
+    for (let i = 0; i <= 10; i++) {
+        seedData.push(generateDestination())
+    }
+    return Destination.insertMany(seedData);
 }
 
 // Generate an activity object
@@ -44,13 +53,13 @@ function generateActivityData(username) {
 // Generate a destination object
 
 
-function generateDestination(idArray = [], username) {
+function generateDestination() {
     return {
         complete: faker.random.boolean(),
         published: faker.random.boolean(),
-        activities: idArray,
+        activities: [],
         name: faker.address.city(),
-        user: username
+        user: 'testing'
     };
 }
 
@@ -150,13 +159,13 @@ describe('Destination Diary API', function () {
                     // console.log(`user dests`, res);
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
-                    //     return Destination.find().count();
-                    // })
-                    // .then(function(count) {
-                    //     console.log(`count`, count);
-                    //     let resCount = _res.body.length;
-                    //     console.log(`resCount`, resCount);
-                    //     expect(resCount).to.equal(count);
+                        return Destination.find().count();
+                    })
+                    .then(function(count) {
+                        console.log(`count`, count);
+                        let resCount = _res.body.length;
+                        console.log(`resCount`, resCount);
+                        expect(resCount).to.equal(count);
                 })
 
             //     let keysArray = Object.keys(res.body);
