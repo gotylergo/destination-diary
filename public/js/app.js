@@ -25,13 +25,6 @@ $(function () {
         });
     }
 
-    // Clear session token to sign the user out and redirect to the homepage
-
-    $(".sign-out-button ").on("click", function (e) {
-        e.preventDefault();
-        sessionStorage.setItem("token", "");
-        window.location.replace("/");
-    })
 
     // Open help modal
 
@@ -113,9 +106,15 @@ $(function () {
         let activityStr = "";
         destination.activities.forEach(activity => {
             activityStr += `<li id="i${activity._id}"><input type="text" value="${activity.name}" /><span class="delete-activity red-hover-button  card-button hide-me"><a href=""><i class="fa fa-minus-circle"></a></i></li>`;
-        })
+        });
+        let cardType = "";
+        if (destination.published) {
+            cardType = "published-card";
+        } else {
+            cardType = "dest-card"
+        }
         return `
-    <div class="card dest-card shadow hawaii-card" id="i${destination._id}">
+    <div class="card ${cardType} shadow" id="i${destination._id}">
         <div class="close-card-button card-button hide-me">
             <a href="#"><i class="fa fa-times-circle"></i></a>
         </div>
@@ -124,7 +123,9 @@ $(function () {
             <span class="card-button hide-me"><a href="#"><i class="fa fa-floppy-o update-button" aria-label="Save card button" title="Save"></i></a></span>
             <span class="card-button hide-me"><a href="#"><i class="fa fa-check-circle-o complete-button" aria-label="Complete card button" title="Complete"></i></a></span>
             </div>
-        <input type="text" class="dest-title" value="${destination.name}" />
+        
+            <span class="published-check"><i class="fa fa-check" aria-label="Published destination indicator" title="Published destination"></i></span>
+            <input type="text" class="dest-title" value="${destination.name}" />
         <ul class="activities-list">${activityStr}</ul>
         <div class="card-button hide-me">
         <a href="#">

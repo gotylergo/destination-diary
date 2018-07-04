@@ -10,9 +10,17 @@ $("body").on("click", ".close-card-button", function (e) {
     $("#login-error, #register-error").html("");
 });
 
+// Clear session token to sign the user out and redirect to the homepage
+
+$(".sign-out-button ").on("click", function (e) {
+    e.preventDefault();
+    sessionStorage.setItem("token", "");
+    window.location.replace("/");
+})
+
 // Login modal
 
-$("body").on("click", ".login-link", function (e) {
+$("body").on("click", ".sign-in-button", function (e) {
     e.preventDefault();
     $(".login-modal").removeClass("hide-me");
 });
@@ -46,28 +54,33 @@ $("body").on("click", "#register-success > button", function (e) {
 
 $("#register-form").submit(function (e) {
     e.preventDefault();
-    let newUser = {
-        "username": $("#new-username").val(),
-        "password": $("#new-password").val(),
-        "name": $("#new-name").val()
-    };
+    if ($("#new-password").val() !== $("#confirm-password").val()) {
+        $("#register-error").html("Passwords do not match. Try again.");
+        $("#new-password").val("");
+        $("#confirm-password").val("");
+    } else {
+        let newUser = {
+            "username": $("#new-username").val(),
+            "password": $("#new-password").val(),
+            "name": $("#new-name").val()
+        };
 
-    $.ajax({
-        type: "POST",
-        url: "/api/users",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(newUser),
-        success: function (data, textStatus, jqXHR) {
-            $("#register-form input").val("");
-            $("#register-form").addClass("hide-me");
-            $("#register-success").removeClass("hide-me");
-        },
-        error: function (data, textStatus, errorThrown) {
-            $("#register-error").html(`${data.responseJSON.location} - ${data.responseJSON.message}`);
-        }
-    });
-
+        $.ajax({
+            type: "POST",
+            url: "/api/users",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(newUser),
+            success: function (data, textStatus, jqXHR) {
+                $("#register-form input").val("");
+                $("#register-form").addClass("hide-me");
+                $("#register-success").removeClass("hide-me");
+            },
+            error: function (data, textStatus, errorThrown) {
+                $("#register-error").html(`${data.responseJSON.location} - ${data.responseJSON.message}`);
+            }
+        });
+    }
 });
 
 // Login form

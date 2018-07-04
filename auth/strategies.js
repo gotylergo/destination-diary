@@ -9,6 +9,8 @@ const { JWT_SECRET } = require('../config');
 
 const localStrategy = new LocalStrategy((username, password, callback) => {
   let user;
+  // Username should be case insensitive
+  username = username.toLowerCase();
   User.findOne({ username: username })
     .then(_user => {
       user = _user;

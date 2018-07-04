@@ -1,8 +1,8 @@
 'use strict';
 const express = require('express');
 const passport = require('passport');
-const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 const config = require('../config');
@@ -38,4 +38,4 @@ router.get('/app_protected', jwtAuth, (req, res) => {
   res.json({ authToken });
 });
 
-module.exports = { router };
+module.exports = { router, createAuthToken };

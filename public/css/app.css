@@ -46,10 +46,6 @@ header {
     text-decoration: none;
 }
 
-.hide-me {
-    display: none;
-}
-
 h1 {
     color: white;
     font-variant: small-caps;
@@ -84,9 +80,26 @@ h1 {
 .new-dest-card {
     background: darkgray;
 }
+input::placeholder {
+    color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+}
+
+.published-card {
+    background: lightgreen;
+}
+.published-card .published-check {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 2em;
+}
 
 .dest-card {
-    background: lightgreen;
+    background: lightseagreen;
+}
+.dest-card .published-check {
+    display: none;
 }
 
 .activities-list li {

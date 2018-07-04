@@ -16,13 +16,14 @@ body {
 }
 
 .user-menu a {
-    color: white;
+    color: #000;
     font-family: Roboto, sans-serif;
 }
 
 header {
     position: relative;
     height: 400px;
+    min-width: 400px;
     overflow: hidden;
     background: url('/img/bg-hero.jpg');
     background-repeat: no-repeat;
@@ -37,6 +38,10 @@ header {
     transform: translate(-50%, -50%);
     width: 400px;
     text-align: center;
+}
+
+.main {
+    min-width: 400px;
 }
 
 h1 {

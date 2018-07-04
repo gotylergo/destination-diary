@@ -8,37 +8,34 @@ const fs = require('fs');
 let { Destination } = require('./models');
 let { Activity } = require('./activityModel');
 
-const destinationsRouter = express.Router();
-
-const passport = require('passport');
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const destinationsRouterTesting = express.Router();
 
 const jsonParser = bodyParser.json();
 
-destinationsRouter.use(bodyParser.urlencoded({ extended: true })); destinationsRouter.use(bodyParser.json());
+destinationsRouterTesting.use(bodyParser.urlencoded({ extended: true })); destinationsRouterTesting.use(bodyParser.json());
 
 // Upload image on POST
 
-destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res) {
+destinationsRouterTesting.post('/upload/:destTitle', jsonParser, function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.file.path;
         let fileExt = `.${files.file.type.slice(6)}`;
-        var newpath = `./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
-        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        var newpath = `./public/img/destinations/${req.body.user}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        let newurl = `/img/destinations/${req.body.user}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
         if (fileExt == ".jpeg" || fileExt == ".png" || fileExt == ".gif") {
             fs.rename(oldpath, newpath, function (err) {
                 if (err) throw err;
-                Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
-                .then(activity => {
-                    res.send(activity);
-                })
-                .catch(err => {
-                    res.send(err);
-                })
+                Activity.findByIdAndUpdate(fields.activityID, { url: newurl }, { new: true })
+                    .then(activity => {
+                        res.send(activity);
+                    })
+                    .catch(err => {
+                        res.send(err);
+                    })
             });
 
-         } else {
+        } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
     });
@@ -47,19 +44,19 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
 
 // Get an Activity by it's ID
 
-destinationsRouter.get('/activities/:activityID', jsonParser, (req, res) => {
+destinationsRouterTesting.get('/activities/:activityID', jsonParser, (req, res) => {
     Activity.findById(req.params.activityID)
-    .then(activity => {
-        res.send(activity);
-    })
-    .catch(err => {
-        res.send(err);
-    })
+        .then(activity => {
+            res.send(activity);
+        })
+        .catch(err => {
+            res.send(err);
+        })
 })
 
 // Post to create a destination
 
-destinationsRouter.post('/', [jsonParser, jwtAuth], (req, res) => {
+destinationsRouterTesting.post('/', jsonParser, (req, res) => {
     let { name, complete, published, activities } = req.body;
     name = name.trim();
 
@@ -68,7 +65,7 @@ destinationsRouter.post('/', [jsonParser, jwtAuth], (req, res) => {
         tempArray.push({
             name: activity.name,
             url: activity.url,
-            user: req.user.username
+            user: req.body.user
         })
     }
 
@@ -85,7 +82,7 @@ destinationsRouter.post('/', [jsonParser, jwtAuth], (req, res) => {
         })
 
     function createDestination(idArray) {
-        Destination.find({ user: req.user.username, name })
+        Destination.find({ user: req.body.user, name })
             .count()
             .then(count => {
                 if (count > 0) {
@@ -101,7 +98,7 @@ destinationsRouter.post('/', [jsonParser, jwtAuth], (req, res) => {
             })
             .then(destination => {
                 return Destination.create({
-                    user: req.user.username,
+                    user: req.body.user,
                     name,
                     complete,
                     published,
@@ -122,7 +119,7 @@ destinationsRouter.post('/', [jsonParser, jwtAuth], (req, res) => {
 
 // Update a destination by id on PUT
 
-destinationsRouter.put('/id/:id', [jsonParser, jwtAuth], (req, res) => {
+destinationsRouterTesting.put('/id/:id', jsonParser, (req, res) => {
     let { name, complete, published, activities } = req.body;
 
     let tempArray = [];
@@ -130,7 +127,7 @@ destinationsRouter.put('/id/:id', [jsonParser, jwtAuth], (req, res) => {
         tempArray.push({
             name: activity.name,
             url: activity.url,
-            user: req.user.username,
+            user: req.body.user,
             destination: activity.destination
         })
     }
@@ -160,19 +157,19 @@ destinationsRouter.put('/id/:id', [jsonParser, jwtAuth], (req, res) => {
 
 // Remove a destination by ID on DELETE
 
-destinationsRouter.delete('/id/:id', [jsonParser, jwtAuth], (req, res) => {
+destinationsRouterTesting.delete('/id/:id', jsonParser, (req, res) => {
     for (let activity of req.body.activities) {
         Activity.findOneAndRemove({ _id: activity.id })
-        .catch(err => res.status(500).send({ message: 'Internal server error.', error: err}));
+            .catch(err => res.status(500).send({ message: 'Internal server error.', error: err }));
     }
     Destination.findOneAndRemove({ _id: req.params.id })
-        .then(dest => res.status(204).send(`${req.params.id} deleted.`))
+        .then(dest => res.send(`${req.params.id} deleted.`))
         .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
 // Get one destination by id on GET
 
-destinationsRouter.get('/id/:id', [jsonParser, jwtAuth], (req, res) => {
+destinationsRouterTesting.get('/id/:id', jsonParser, (req, res) => {
     return Destination.findOne({ _id: req.params.id })
         .populate("activities")
         .then(destination => {
@@ -183,7 +180,7 @@ destinationsRouter.get('/id/:id', [jsonParser, jwtAuth], (req, res) => {
 
 // GET all destinations for all users
 
-destinationsRouter.get('/all/', [jsonParser, jwtAuth], (req, res) => {
+destinationsRouterTesting.get('/all/', jsonParser, (req, res) => {
     return Destination.find()
         .populate("activities")
         .then(destinations => {
@@ -194,7 +191,7 @@ destinationsRouter.get('/all/', [jsonParser, jwtAuth], (req, res) => {
 
 //GET all published destinations
 
-destinationsRouter.get('/public/', jsonParser, (req, res) => {
+destinationsRouterTesting.get('/public/', jsonParser, (req, res) => {
     return Destination.find({ published: true })
         .populate("activities")
         .then(destinations => {
@@ -205,8 +202,8 @@ destinationsRouter.get('/public/', jsonParser, (req, res) => {
 
 // GET all destinations for the current user
 
-destinationsRouter.get('/', [jsonParser, jwtAuth], (req, res) => {
-    return Destination.find({ user: req.user.username })
+destinationsRouterTesting.get('/', jsonParser, (req, res) => {
+    return Destination.find({ user: req.body.user })
         .populate("activities")
         .then(destinations => {
             res.json(destinations);
@@ -214,4 +211,4 @@ destinationsRouter.get('/', [jsonParser, jwtAuth], (req, res) => {
         .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
-module.exports = { destinationsRouter };
+module.exports = { destinationsRouterTesting };

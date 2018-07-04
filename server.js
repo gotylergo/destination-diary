@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-const { destinationsRouter } = require('./destinations');
+const { destinationsRouter, destinationsRouterTesting } = require('./destinations');
 const { PORT, DATABASE_URL} = require('./config');
 
 mongoose.Promise = global.Promise;
@@ -19,6 +19,8 @@ passport.use(jwtStrategy);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 app.use('/api/destinations/', destinationsRouter);
+app.use('/api/destinations/test', destinationsRouterTesting);
+
 app.use(express.static('public'));
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
@@ -37,15 +39,15 @@ app.use('*', (req, res) => {
 
 let server;
 
-function runServer() {
+function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL, err => {
+    mongoose.connect(databaseUrl, err => {
       if (err) {
         return reject(err);
       }
       server = app
-        .listen(PORT, () => {
-          console.log(`App is listening on port ${PORT}`);
+        .listen(port, () => {
+          console.log(`App is listening on port ${port}`);
           resolve();
         })
         .on('error', err => {
@@ -71,7 +73,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+  runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer };
