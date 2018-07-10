@@ -22,6 +22,12 @@ $(function () {
         });
     }
 
+    // Toggle nav memu
+
+    $(".nav-button").on("click", function(e) {
+        e.preventDefault();
+        $("#nav-bar").toggleClass('hide-me');
+    });
 
     // Open help modal
 

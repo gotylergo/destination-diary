@@ -15,25 +15,27 @@
 
 <body>
     <header>
-        <span>
-            <i class="fa fa-suitcase"></i> My Destination Diary</span>
-        <div id="nav-bar">
-            <span class="home-button" aria-label="Home">
-                <a href="/">
-                    <i class="fa fa-home" aria-label="Home button" title="Home"></i>
-                </a>
-            </span>
-            <span class="sign-out-button hide-me">
-                <a href="#">
-                    <i class="fa fa-sign-out" aria-label="Sign out button" title="Sign out"></i>
-                </a>
-            </span>
-            <span class="help-button" aria-label="Help">
-                <a href="/">
-                    <i class="fa fa-question-circle" aria-label="Help button" title="Help"></i>
-                </a>
-            </span>
-        </div>
+            <nav role="nav" id="nav-bar">
+                    <ul>
+                        <li><span class="home-button" aria-label="Home">
+                            <a href="/">
+                                <span class="nav-label">Home</span> <i class="fa fa-home" aria-label="Home button" title="Home"></i>
+                            </a>
+                        </span></li>
+                        <li><span class="sign-out-button hide-me">
+                            <a href="#">
+                                <span class="nav-label">Sign Out</span> <i class="fa fa-sign-out" aria-label="Sign out button" title="Sign out"></i>
+                            </a>
+                        </span></li>
+                        <li><span class="help-button" aria-label="Help">
+                            <a href="/">
+                                <span class="nav-label">Help</span> <i class="fa fa-question-circle" aria-label="Help button" title="Help"></i>
+                            </a>
+                        </span></li>
+                    </ul>
+                </nav>        
+        <span><i class="fa fa-suitcase"></i> My Destination Diary</span>
+        <a class="nav-button" href="#" ><i class="fa fa-bars"></i></a>
     </header>
     <main role="main" class="container">
     </main>

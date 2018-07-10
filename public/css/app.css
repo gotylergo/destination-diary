@@ -20,30 +20,68 @@ header {
     z-index: 1;
     position: fixed;
     background-color: #3F51B5;
-    height: 64px;
-    padding: 0 32px 0;
+    height: 2.5em;
+    padding: 0 15px;
     box-sizing: border-box;
     font-size: 1.5em;
-    line-height: 64px;
+    line-height: 2.5em;
     width: 100%;
     min-width: 375px;
 }
 
-#nav-bar {
+a.nav-button {
     float: right;
-    font-size: 1.5em;
+    color: #fff;
+    text-decoration: none;
+    padding: 0;
+    font-weight: bold;
 }
 
-#nav-bar>span {
-    margin-left: 15px;
+a.nav-button:hover,
+a.nav-button:focus {
+    color: #ab3fb5;
+}
+
+#nav-bar {
+    position: absolute;
+    top: 2.5em;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#nav-bar ul {
+    list-style: none;
+    text-align: right;
+    background: #3F51B5;
+    margin: 0;
+    padding: 1em;
 }
 
 #nav-bar a,
-#nav-bar a:active,
-#nav-bar a:hover,
-#nav-bar a:visited {
+#nav-bar a:visited,
+#nav-bar a:active {
+    display: block;
+    padding: 0 15px;
     color: #fff;
     text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    letter-spacing: 0.1em;
+    line-height: 1.5em;
+    height: 1.5em;
+    border-bottom: 1px solid #ccc;
+}
+
+#nav-bar a:hover,
+#nav-bar a:focus {
+    background: #ab3fb5;
+}
+
+#nav-bar li:last-child a {
+    border-bottom: none;
 }
 
 h1 {
@@ -80,6 +118,7 @@ h1 {
 .new-dest-card {
     background: darkgray;
 }
+
 input::placeholder {
     color: rgba(0, 0, 0, 0.7);
     opacity: 1;
@@ -88,6 +127,7 @@ input::placeholder {
 .published-card {
     background: lightgreen;
 }
+
 .published-card .published-check {
     position: absolute;
     top: 1em;
@@ -98,6 +138,7 @@ input::placeholder {
 .dest-card {
     background: lightseagreen;
 }
+
 .dest-card .published-check {
     display: none;
 }
@@ -106,7 +147,8 @@ input::placeholder {
     list-style: none;
 }
 
-.card input, .card-open input {
+.card input,
+.card-open input {
     width: 85%;
 }
 
@@ -174,6 +216,35 @@ input::placeholder {
         font-size: 2em;
     }
 
+    a.nav-button {
+        display: none;
+    }
+
+    #nav-bar {
+        position: static;
+    }
+
+    #nav-bar ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-label {
+        display: none;
+    }
+
+    #nav-bar li {
+        display: block;
+        padding: 0;
+        float: right;
+        font-size: 1.65em;
+    }
+    #nav-bar a,
+    #nav-bar a:visited,
+    #nav-bar a:active {
+        border-bottom: 0;
+    }
+
     .card {
         width: 40%;
         float: left;
@@ -182,7 +253,6 @@ input::placeholder {
     .dest-title {
         font-size: 1.5em;
     }
-
 }
 
 @media (min-width: 1200px) {
@@ -191,5 +261,4 @@ input::placeholder {
         width: 23%;
         float: left;
     }
-
 }
