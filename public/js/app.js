@@ -11,15 +11,12 @@ $(function () {
             type: 'GET',
             headers: { 'authorization': `Bearer ${myToken}` },
             success: function (data) {
-                console.log("Token valid.");
-                console.log(myToken);
                 loadApp();
             },
 
             // If no logged in user, display the login screen 
 
             error: function () {
-                console.log("Token invalid!");
                 $(".login-modal").removeClass("hide-me");
             }
         });
@@ -289,7 +286,6 @@ $(function () {
             var currentActivity = $(this).find("input").val();
             var currentActivityID = $(this).attr('id');
             currentActivityID = currentActivityID.slice('1');
-            console.log(currentActivityID);
             // Skip empty activities
             if (currentActivity.length > 0) {
                 let activity = {
@@ -325,7 +321,6 @@ $(function () {
     // Photo Upload Wizard Structure
 
     function uploadWizard() {
-        console.log("Upload wizard called");
         let tempActivity;
         for (let activity of myDestination.activities) {
             if (activity.url === "") {
@@ -392,7 +387,6 @@ $(function () {
                 "Authorization": `Bearer ${myToken}`
             },
             "success": function (data) {
-                console.log(`updated activity object`, data);
                 for (let activity of myDestination.activities) {
                     if (activity.id === data._id) {
                         activity.url = data.url;
@@ -471,9 +465,7 @@ $(function () {
                 loadApp();
             },
             "error": function (err) {
-                console.log(id);
                 alert(err.responseText);
-                console.log(err);
             }
         });
     })

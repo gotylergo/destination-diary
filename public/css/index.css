@@ -23,7 +23,7 @@ body {
 header {
     position: relative;
     height: 400px;
-    min-width: 400px;
+    min-width: 375px;
     overflow: hidden;
     background: url('/img/bg-hero.jpg');
     background-repeat: no-repeat;
@@ -36,12 +36,12 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
+    width: 375px;
     text-align: center;
 }
 
 .main {
-    min-width: 400px;
+    min-width: 375px;
 }
 
 h1 {
@@ -67,7 +67,7 @@ h2 {
 .dest-gradient {
     position: absolute;
     height: 150px;
-    width: 400px;
+    width: 375px;
     background: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 62%, rgba(0, 0, 0, 0.7) 75%, rgba(0, 0, 0, 0) 100%);
 }
 

@@ -20,17 +20,6 @@ chai.use(chaiHttp);
 
 // Seed database with random data
 
-// let seedData = [],
-//     total = 10,
-//     counter = 0;
-
-function seedDestinationData_old() {
-    console.info('Seeding destination data');
-        for (let i = 0; i <= total; i++) {
-        generateDestinationData();
-    }
-}
-
 function seedDestinationData() {
     console.info('Seeding destination data');
     let seedData = [];
@@ -38,16 +27,6 @@ function seedDestinationData() {
         seedData.push(generateDestination())
     }
     return Destination.insertMany(seedData);
-}
-
-// Generate an activity object
-
-function generateActivityData(username) {
-    return {
-        name: `${faker.hacker.verb()} ${faker.hacker.adjective()} ${faker.hacker.noun()}`,
-        url: "",
-        user: username
-    }
 }
 
 // Generate a destination object
@@ -63,37 +42,6 @@ function generateDestination() {
     };
 }
 
-// Generate a destination object
-
-function generateDestinationData() {
-
-    const username = 'testing';
-    let activityArr = []
-    const activityQty = Math.ceil(Math.random() * 5);
-
-    for (let i = 0; i < activityQty; i++) {
-        activityArr.push(generateActivityData(username))
-    }
-
-    return Activity.insertMany(activityArr)
-        .then(resArray => {
-            let idArray = [];
-            for (let res of resArray) {
-                idArray.push(res._id);
-            };
-            let destinationData = generateDestination(idArray, username);
-            seedData.push(destinationData);
-            counter++;
-            if (counter === total) {
-                Destination.insertMany(seedData);
-                console.log(`Seed complete!`);
-            }
-        })
-        .catch(err => {
-            throw err;
-        })
-}
-
 // Delete the database
 
 function tearDownDb() {
@@ -106,7 +54,6 @@ function tearDownDb() {
   }
 
 describe('Destination Diary API', function () {
-
 
     before(function () {
         tearDownDb();
@@ -130,21 +77,17 @@ describe('Destination Diary API', function () {
                 .get('/api/destinations/public')
                 .then(function (res) {
                     _res = res;
-                    console.log(`public dests`, res.body);
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     return Destination.find({ published: true }).count();
                 })
                 .then(function (count) {
-                    console.log(`count`, count);
                     let resCount = _res.body.length;
-                    console.log(`resCount`, resCount);
                     expect(resCount).to.equal(count);
                 })
         });
 
     });
-
 
     describe('Authenticated user GET endpoint', function () {
 
@@ -156,37 +99,15 @@ describe('Destination Diary API', function () {
                 .set('Authorization', `bearer ${testing_token}`)
                 .then(function (res) {
                     _res = res;
-                    // console.log(`user dests`, res);
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                         return Destination.find().count();
                     })
                     .then(function(count) {
-                        console.log(`count`, count);
                         let resCount = _res.body.length;
-                        console.log(`resCount`, resCount);
                         expect(resCount).to.equal(count);
                 })
-
-            //     let keysArray = Object.keys(res.body);
-            //     console.log('keysArray', keysArray);
-            //     // expect(keysArray).to.have.length.of.at.least(1);
-            // })
         });
-
-        //     it('should respond with JSON array', function (done) {
-        //         return chai.request(app)
-        //             .get('/api/destinations')
-        //             .set('Authorization', 'bearer ' + auth.token)
-        //             .expect(200)
-        //             .expect('Content-Type', /json/)
-        //             .end(function (err, res) {
-        //                 if (err) return done(err);
-        //                 res.body.should.be.instanceof(Array);
-        //                 done();
-        //             });
-        //     });
-        // });
 
     })
 
@@ -218,15 +139,12 @@ describe('Destination Diary API', function () {
 
     describe('Authenticated user PUT endpoint', function () {
 
-
         it('should update a destination for user on PUT', function () {
 
             const updatedDestination = generateDestination();
-            console.log(`updatedDestination`, updatedDestination);
             let testing_token = auth_router.createAuthToken({ username: 'testing' })
             Destination.findOne()
                 .then(function (dest) {
-                    console.log(`dest`, dest);
                     return chai.request(app)
                         .put(`/api/destinations/id/${dest._id}`)
                         .set('Authorization', `bearer ${testing_token}`)
@@ -251,7 +169,6 @@ describe('Destination Diary API', function () {
     })
 
     describe('Authenticated user DELETE endpoint', function () {
-
 
         it('should delete a destination by ID', function () {
 

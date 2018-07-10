@@ -19,14 +19,6 @@ const activitySchema = mongoose.Schema({
     }
 });
 
-// ActivitySchema.methods.serialize = function () {
-//     return {
-//         name: this.name,
-//         url: this.url,
-//         // || dummyurl
-//     };
-// };
-
 const Activity = mongoose.model('Activity', activitySchema);
 
 module.exports = { Activity };

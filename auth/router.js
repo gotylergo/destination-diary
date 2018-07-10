@@ -34,7 +34,6 @@ router.post('/refresh', jwtAuth, (req, res) => {
 
 router.get('/app_protected', jwtAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
-  console.log(`${req.user.username} is logged in.`);
   res.json({ authToken });
 });
 

@@ -28,17 +28,6 @@ const destinationSchema = mongoose.Schema({
     }]
 });
 
-// DestinationSchema.methods.serialize = function () {
-//     return {
-//         user: this.user,
-//         name: this.name,
-//         complete: this.complete || false,
-//         published: this.published,
-//         activities: this.activities,
-//         id: this.id
-//     };
-// };
-
 const Destination = mongoose.model('Destination', destinationSchema);
 
 module.exports = { Destination };

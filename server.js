@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-const { destinationsRouter, destinationsRouterTesting } = require('./destinations');
+const { destinationsRouter } = require('./destinations');
 const { PORT, DATABASE_URL} = require('./config');
 
 mongoose.Promise = global.Promise;
@@ -19,7 +19,6 @@ passport.use(jwtStrategy);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 app.use('/api/destinations/', destinationsRouter);
-app.use('/api/destinations/test', destinationsRouterTesting);
 
 app.use(express.static('public'));
 
