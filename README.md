@@ -1,7 +1,7 @@
 # Destination Diary
 Destination Diary is a personal travel book web app that allows users to track travel goals and publish photos of completed journeys as destination photo galleries to the homepage.
 
-[Live demo](https://serene-crag-39575.herokuapp.com/)
+[Live demo](https://thinkful-1174.appspot.com/)
 ![Screenshot](http://i66.tinypic.com/35k99i9.png)
 ![Screenshot](http://i67.tinypic.com/qs74mu.png)
 ## Technologies

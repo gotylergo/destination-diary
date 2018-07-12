@@ -27,6 +27,9 @@
     "superagent": "^3.8.3",
     "supertest": "^3.1.0"
   },
+  "engines": {
+    "node": "9.x"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "mocha"
