@@ -1,5 +1,5 @@
 # Destination Diary
-Destination Diary is a personal travel book web app that allows users to track travel goals and publish photos of completed journeys as destination photo galleries to the homepage.
+Destination Diary is a personal travel book web app that allows users to track travel goals and publish photos of completed journeys as destination photo galleries to the homepage, built in Express on Node with a Mongo database.
 
 [Live demo](https://destination-diary.herokuapp.com/)
 ![Screenshot](http://i66.tinypic.com/35k99i9.png)
