@@ -22,20 +22,13 @@ $(function () {
         });
     }
 
-    // Toggle nav memu
-
-    $(".nav-button").on("click", function(e) {
-        e.preventDefault();
-        $("#nav-bar").toggleClass('hide-me');
-    });
-
     // Open help modal
 
     $("body").on("click", ".help-button", function (e) {
         e.preventDefault();
         $(".help-modal").removeClass("hide-me");
         $(".help-modal .close-card-button").removeClass("hide-me");
-    });    
+    });
 
     // Close help modal
 
@@ -169,7 +162,7 @@ $(function () {
 
     // Delete an activity
 
-    $("body").on("click", ".delete-activity", function(e) {
+    $("body").on("click", ".delete-activity", function (e) {
         e.preventDefault();
         $(this).parent().remove();
     });
@@ -408,6 +401,42 @@ $(function () {
         });
     })
 
+
+    // // Upload photo and add url to activity
+
+    // $("body").on("submit", "#uploadForm", function (e) {
+    //     e.preventDefault();
+    //     let formdata = new FormData();
+    //     formdata.append('activityID', $('input[name=activityID]').val());
+    //     formdata.append('activityName', $('input[name=activityName]').val());
+    //     formdata.append('file', $('#file')[0].files[0]);
+    //     $.ajax({
+    //         "async": true,
+    //         "crossDomain": true,
+    //         "url": `/api/destinations/upload/${myDestination.name}`,
+    //         "method": "POST",
+    //         "data": formdata,
+    //         "processData": false,
+    //         "contentType": false,
+    //         "headers": {
+    //             "Authorization": `Bearer ${myToken}`
+    //         },
+    //         "success": function (data) {
+    //             for (let activity of myDestination.activities) {
+    //                 if (activity.id === data._id) {
+    //                     activity.url = data.url;
+    //                     break;
+    //                 }
+    //             }
+
+    //             $('.upload-wizard').html(uploadWizard());
+    //         },
+    //         "error": function (err) {
+    //             alert(err.responseText);
+    //         }
+    //     });
+    // })
+
     // Publish destination 
 
     $("body").on("click", ".upload-wizard-publish-button", function (e) {
@@ -455,7 +484,7 @@ $(function () {
             });
         });
 
-        myDestination = {id, activities};
+        myDestination = { id, activities };
 
         $.ajax({
             "async": true,
