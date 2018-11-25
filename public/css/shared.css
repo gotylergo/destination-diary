@@ -15,9 +15,8 @@
     max-height: 80%;
     margin: 0;
     border-radius: 7px;
-    font-size: 1.5em;
-    padding: 50px;
-    padding-bottom: 50px;
+    font-size: 1.2em;
+    padding: 40px;
     z-index: 2;
     overflow: scroll;
 }
@@ -26,6 +25,11 @@
     position: absolute;
     top: 15px;
     right: 15px;
+}
+
+.modal h4 {
+    margin-bottom: 0;
+    color: darkblue;
 }
 
 .card a,
@@ -119,4 +123,5 @@ button {
 
 .modal button {
     width: 100%;
+    margin-top: 1em;
 }

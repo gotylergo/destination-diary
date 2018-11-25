@@ -39,57 +39,67 @@
         <h2>Where have people been travelling?</h2>
     </main>
     <div class="modal login-modal hide-me">
-            <div class="close-card-button">
-                <a href="#">
-                    <i class="fa fa-times-circle"></i>
-                </a>
-            </div>
-            <p class="login-menu">
-                <span class="login-tab login-menu-active">
-                    <a href="#">Login</a>
-                </span> |
-                <span class="register-tab login-menu-passive">
-                    <a href="#">Register</a>
-                </span>
-            </p>
-            <form id="login-form">
-                <label for="username">Username</label>
-                <input id="username" type="text">
-                <label for="password">Password</label>
-                <input id="password" type="password">
-                <button>Sign in</button>
-                <p id="login-error" class="error"> </p>
-            </form>
-            <form id="register-form" class="hide-me">
-                <label for="name">Name</label>
-                <input id="new-name" type="text">
-                <label for="new-username">Username</label>
-                <input id="new-username" type="text">
-                <label for="password">Password</label>
-                <input id="new-password" type="password">
-                <label for="confirm-password">Confirm password</label>
-                <input id="confirm-password" type="password">
-                <button>Register</button>
-                <p id="register-error" class="error"> </p>
-            </form>
-            <div id="register-success" class="hide-me">
-                <p>Your account was created successfully.</p>
-                <button>Log In</button>
-            </div>
+        <div class="close-card-button">
+            <a href="#">
+                <i class="fa fa-times-circle"></i>
+            </a>
         </div>
-        <div class="modal help-modal hide-me">
-            <div class="close-card-button">
-                <a href="#">
-                    <i class="fa fa-times-circle"></i>
-                </a>
-            </div>
-            <h4>Start Your Travel Bucket List</h4>
-            <p>Create your own travel book. You can save all the places you want to go and all the things you want to do there.</p>
-            <h4>Share Your Journey</h4>
-            <p>When you complete your destination, upload photos of the activities you completed there and share them for everyone to see!</p>
-            <h4>Ready to see the world?</h4>
-            <button>Start Your Journey</button>
+        <p class="login-menu">
+            <span class="login-tab login-menu-active">
+                <a href="#">Login</a>
+            </span> |
+            <span class="register-tab login-menu-passive">
+                <a href="#">Register</a>
+            </span>
+        </p>
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input id="username" type="text">
+            <label for="password">Password</label>
+            <input id="password" type="password">
+            <button>Sign in</button>
+            <p id="login-error" class="error"> </p>
+        </form>
+        <form id="register-form" class="hide-me">
+            <label for="name">Name</label>
+            <input id="new-name" type="text">
+            <label for="new-username">Username</label>
+            <input id="new-username" type="text">
+            <label for="password">Password</label>
+            <input id="new-password" type="password">
+            <label for="confirm-password">Confirm password</label>
+            <input id="confirm-password" type="password">
+            <button>Register</button>
+            <p id="register-error" class="error"> </p>
+        </form>
+        <div id="register-success" class="hide-me">
+            <p>Your account was created successfully.</p>
+            <button>Log In</button>
         </div>
+    </div>
+    <div class="modal help-modal hide-me">
+        <div class="close-card-button">
+            <a href="#">
+                <i class="fa fa-times-circle"></i>
+            </a>
+        </div>
+        <h4>Start Your Travel Bucket List</h4>
+        <p>Create your own travel book. You can save all the places you want to go and all the things you want to do
+            there.</p>
+        <h4>Share Your Journey</h4>
+        <p>When you complete your destination, upload photos of the activities you completed there and share them for
+            everyone to see!</p>
+        <div class="demo-creds">
+            <h4>Not Ready to Signup?</h4>
+            <p>Login as the demo user:</p>
+            <ul>
+                <li><b>Username</b>: demouser</li>
+                <li><b>Password</b>: dem0P@ss1</li>
+            </ul>
+        </div>
+        <h4>Ready to see the world?</h4>
+        <button>Start Your Journey</button>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/index.js"></script>
     <script src="js/shared.js"></script>
