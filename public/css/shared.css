@@ -48,9 +48,13 @@
 .login-menu-passive>a,
 .login-menu-passive>a:visited,
 .login-menu-passive>a:active {
-    color: #000;
-    text-decoration: underline;
+    color: rgb(120, 120, 120);
+    text-decoration: none;
 }
+.login-menu-passive>a:hover {
+    color: #000;
+}
+
 
 input {
     background-color: transparent;
