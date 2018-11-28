@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const req = require('request')
 
 const formidable = require('formidable');
 const fs = require('fs');
@@ -23,47 +24,16 @@ destinationsRouter.use(bodyParser.urlencoded({ extended: true })); destinationsR
 
 
 var AWS = require('aws-sdk');
-var fs =  require('fs');
+var mys3fs =  require('fs');
 
 var s3 = new AWS.S3();
 
+
 // Bucket names must be unique across all S3 users
 
-var myBucket = S3_BUCKET;
+var myBucket = exports.S3_BUCKET;
 
-var myKey = `uploads/${req.file.originalname}`;
               
-
-
-
-// const multiparty = require('connect-multiparty'),
-//    multipartyMiddleware = multiparty();
-   
-// destinationsRouter.use(multipartyMiddleware);
-
-fs.readFile(file.path, function (err, data) {
-    if (err) { throw err; }
-  
-  
-  
-       params = {Bucket: myBucket, Key: myKey, Body: data };
-  
-       s3.putObject(params, function(err, data) {
-  
-           if (err) {
-  
-               console.log(err)
-  
-           } else {
-  
-               console.log("Successfully uploaded data to myBucket/myKey");
-  
-           }
-  
-        });
-  
-  });
-
 // Upload image on POST
 
 destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res) {
@@ -90,7 +60,36 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
         }
     });
 
+
+    var myKey = `uploads/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+
+    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
+        if (err) { throw err; }
+      
+      
+      
+           params = {Bucket: myBucket, Key: myKey, Body: data };
+      
+           s3.putObject(params, function(err, data) {
+      
+               if (err) {
+      
+                   console.log(err)
+      
+               } else {
+      
+                   console.log("Successfully uploaded data to myBucket/myKey");
+      
+               }
+      
+            });
+      
+      });
+
 })
+
+
+
 
 // Get an Activity by it's ID
 
