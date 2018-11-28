@@ -23,13 +23,13 @@ destinationsRouter.use(bodyParser.urlencoded({ extended: true })); destinationsR
 
 
 var AWS = require('aws-sdk');
-var fs =  require('fs');
+var mys3fs =  require('fs');
 
 var s3 = new AWS.S3();
 
 // Bucket names must be unique across all S3 users
 
-var myBucket = S3_BUCKET;
+var myBucket = exports.S3_BUCKET;
 
 var myKey = `uploads/${req.file.originalname}`;
               
@@ -41,7 +41,7 @@ var myKey = `uploads/${req.file.originalname}`;
    
 // destinationsRouter.use(multipartyMiddleware);
 
-fs.readFile(file.path, function (err, data) {
+mys3fs.readFile(file.path, function (err, data) {
     if (err) { throw err; }
   
   
