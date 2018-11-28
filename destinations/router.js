@@ -41,9 +41,11 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.file.path;
+        console.log('oldpath file size is: ')
+        console.log(fs.statSync(`${oldpath}`))
         let fileExt = `.${files.file.type.slice(6)}`;
-        var newpath = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}.${fileExt}`;
-        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}.${fileExt}`;
+        var newpath = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}` + '.' + `${fileExt}`;
+        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}` + '.' + `${fileExt}`;
 
 
 //set some global vars
