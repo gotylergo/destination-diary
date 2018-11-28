@@ -109,6 +109,7 @@ mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
         // const { COPYFILE_FICLONE_FORCE } = fs.constants;
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
             TylerCopyFile(oldpath, newpath, function (err) {
+
                 Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
                 .then(activity => {
                     res.send(activity);
@@ -130,6 +131,7 @@ mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
                 
                 .catch(err => {
                     res.send(err);
+                    res.send(activity);
                 })
             });
 
