@@ -33,11 +33,11 @@ var s3 = new AWS.S3();
 
 var myBucket = exports.S3_BUCKET;
 
-var username, destTitle, activityID, fileExt
+let windowhandler = ''
               
 // Upload image on POST
 
-destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res) {
+destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res, windowhandler) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.file.path;
@@ -47,10 +47,10 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
 
 
 //set some global vars
-username = `${req.user.username}`
-destTitle = `${req.params.destTitle}`
-activityID = `${fields.activityID}`
-fileExt = `${fileExt}`
+windowhandler.username = `${req.user.username}`
+windowhandler.destTitle = `${req.params.destTitle}`
+windowhandler.activityID = `${fields.activityID}`
+windowhandler.fileExt = `${fileExt}`
 
 
 
@@ -78,9 +78,9 @@ fileExt = `${fileExt}`
 
 
 
-    var myKey = `uploads/${username}-${destTitle}-${fields.activityID}${fileExt}`;
+    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${fields.activityID}${fileExt}`;
 
-    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
+    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${windowhandler.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
         if (err) { throw err; }
       
       
