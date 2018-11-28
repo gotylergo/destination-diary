@@ -80,6 +80,31 @@ windowhandler.oldpath = `${oldpath}`
 windowhandler.newpath = `${newpath}`
 windowhandler.newpathstat = `${newpathstat}`
 
+var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
+            
+mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
+    if (err) { throw err; }
+  
+  
+    
+       let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
+  
+       s3.putObject(params, function(err, data) {
+  
+           if (err) {
+  
+               console.log(err)
+  
+           } else {
+  
+               console.log("Successfully uploaded data to myBucket/myKey");
+  
+           }
+  
+        });
+  
+  });
+
 
         // const { COPYFILE_FICLONE_FORCE } = fs.constants;
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
@@ -91,30 +116,7 @@ windowhandler.newpathstat = `${newpathstat}`
                     // console.log('newpath file size is: ')
                     // console.log(fs.statSync(`${windowhandler.newpath}`))
             
-                    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
-            
-                    mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
-                        if (err) { throw err; }
-                      
-                      
-                        
-                           let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
-                      
-                           s3.putObject(params, function(err, data) {
-                      
-                               if (err) {
-                      
-                                   console.log(err)
-                      
-                               } else {
-                      
-                                   console.log("Successfully uploaded data to myBucket/myKey");
-                      
-                               }
-                      
-                            });
-                      
-                      });
+
             
 
 
