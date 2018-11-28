@@ -56,14 +56,52 @@ windowhandler.newpath = `${newpath}`
 windowhandler.newpathstat = `${newpathstat}`
 
 
-
+        const { COPYFILE_FICLONE_FORCE } = fs.constants;
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
-            fs.copyFile(oldpath, newpath, function (err) {
+            fs.copyFile(oldpath, newpath, COPYFILE_FICLONE_FORCE, function (err) {
                 if (err) throw err;
                 Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
                 .then(activity => {
                     res.send(activity);
+                    console.log('newpath file size is: ')
+                    console.log(fs.statSync(`${windowhandler.newpath}`))
+            
+                    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
+            
+                    mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
+                        if (err) { throw err; }
+                      
+                      
+                        
+                           let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
+                      
+                           s3.putObject(params, function(err, data) {
+                      
+                               if (err) {
+                      
+                                   console.log(err)
+                      
+                               } else {
+                      
+                                   console.log("Successfully uploaded data to myBucket/myKey");
+                      
+                               }
+                      
+                            });
+                      
+                      });
+            
+
+
+
+
                 })
+
+
+
+
+
+                
                 .catch(err => {
                     res.send(err);
                 })
@@ -72,39 +110,9 @@ windowhandler.newpathstat = `${newpathstat}`
          } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
+        console.log('copied file')
 
-        //fs has a race condition where it async saves a file to the OS .. fun times
-        var start = new Date().getTime();
-        while (new Date().getTime() < start + 2000);
-
-        console.log('newpath file size is: ')
-        console.log(fs.statSync(`${windowhandler.newpath}`))
-
-        var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
-
-        mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
-            if (err) { throw err; }
-          
-          
-            
-               let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
-          
-               s3.putObject(params, function(err, data) {
-          
-                   if (err) {
-          
-                       console.log(err)
-          
-                   } else {
-          
-                       console.log("Successfully uploaded data to myBucket/myKey");
-          
-                   }
-          
-                });
-          
-          });
-
+      
 
 
 
