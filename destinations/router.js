@@ -29,10 +29,6 @@ var mys3fs =  require('fs');
 var s3 = new AWS.S3();
 
 
-// Bucket names must be unique across all S3 users
-
-var myBucket = exports.S3_BUCKET;
-
 let windowhandler = ''
               
 // Upload image on POST
@@ -41,19 +37,23 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.file.path;
-        console.log('oldpath file size is: ')
+        console.log('oldpath ${files.file.path} file size is: ')
         console.log(fs.statSync(`${oldpath}`))
         let fileExt = `.${files.file.type.slice(6)}`;
-        var newpath = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}` + '.' + `${fileExt}`;
-        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}` + '.' + `${fileExt}`;
+        var newpathbefore = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        var newpath = `${newpathbefore}`.replace(/ /g,"-");
+        var newpathstat = `img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
 
 
 //set some global vars
+//this aint workin:
 windowhandler.username = `${req.user.username}`
 windowhandler.destTitle = `${req.params.destTitle}`
 windowhandler.activityID = `${fields.activityID}`
 windowhandler.fileExt = `${fileExt}`
 windowhandler.newpath = `${newpath}`
+windowhandler.newpathstat = `${newpathstat}`
 
 
 
@@ -73,8 +73,41 @@ windowhandler.newpath = `${newpath}`
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
 
+        //fs has a race condition where it async saves a file to the OS .. fun times
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + 100);
+
         console.log('newpath file size is: ')
-        console.log(fs.statSync(`${newpath}`))
+        console.log(fs.statSync(`${windowhandler.newpath}`))
+
+        var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
+
+        mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
+            if (err) { throw err; }
+          
+          
+            
+               let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
+          
+               s3.putObject(params, function(err, data) {
+          
+                   if (err) {
+          
+                       console.log(err)
+          
+                   } else {
+          
+                       console.log("Successfully uploaded data to myBucket/myKey");
+          
+                   }
+          
+                });
+          
+          });
+
+
+
+
 //it is posting file after this, so race condition error
 //need to set the things and use them below basically 
 
@@ -84,30 +117,7 @@ windowhandler.newpath = `${newpath}`
 
 
 
-    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
 
-    mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
-        if (err) { throw err; }
-      
-      
-      
-           params = {Bucket: myBucket, Key: myKey, Body: data };
-      
-           s3.putObject(params, function(err, data) {
-      
-               if (err) {
-      
-                   console.log(err)
-      
-               } else {
-      
-                   console.log("Successfully uploaded data to myBucket/myKey");
-      
-               }
-      
-            });
-      
-      });
 
 })
 

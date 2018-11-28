@@ -1,5 +1,7 @@
 ###Node###
 
+debug.sh
+
 # Logs
 logs
 *.log
