@@ -78,9 +78,9 @@ windowhandler.fileExt = `${fileExt}`
 
 
 
-    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${fields.activityID}${fileExt}`;
+    var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${fileExt}`;
 
-    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${windowhandler.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
+    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${windowhandler.destTitle}-${windowhandler.activityID}${fileExt}`, function (err, data) {
         if (err) { throw err; }
       
       
