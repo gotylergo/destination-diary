@@ -76,6 +76,7 @@ windowhandler.username = `${req.user.username}`
 windowhandler.destTitle = `${req.params.destTitle}`
 windowhandler.activityID = `${fields.activityID}`
 windowhandler.fileExt = `${fileExt}`
+windowhandler.oldpath = `${oldpath}`
 windowhandler.newpath = `${newpath}`
 windowhandler.newpathstat = `${newpathstat}`
 
@@ -92,7 +93,7 @@ windowhandler.newpathstat = `${newpathstat}`
             
                     var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
             
-                    mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
+                    mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
                         if (err) { throw err; }
                       
                       
