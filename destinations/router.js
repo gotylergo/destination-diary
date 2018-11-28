@@ -33,6 +33,7 @@ var s3 = new AWS.S3();
 
 var myBucket = exports.S3_BUCKET;
 
+var username, destTitle, activityID, fileExt
               
 // Upload image on POST
 
@@ -43,6 +44,16 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
         let fileExt = `.${files.file.type.slice(6)}`;
         var newpath = `./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
         let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+
+
+//set some global vars
+username = `${req.user.username}`
+destTitle = `${req.params.destTitle}`
+activityID = `${fields.activityID}`
+fileExt = `${fileExt}`
+
+
+
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
             fs.rename(oldpath, newpath, function (err) {
                 if (err) throw err;
@@ -58,38 +69,39 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
          } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
+//it is posting file after this, so race condition error
+//need to set the things and use them below basically 
 
-
-        var myKey = `uploads/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
-
-        mys3fs.readFile(`./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
-            if (err) { throw err; }
-          
-          
-          
-               params = {Bucket: myBucket, Key: myKey, Body: data };
-          
-               s3.putObject(params, function(err, data) {
-          
-                   if (err) {
-          
-                       console.log(err)
-          
-                   } else {
-          
-                       console.log("Successfully uploaded data to myBucket/myKey");
-          
-                   }
-          
-                });
-          
-          });
 
 
     });
 
 
 
+    var myKey = `uploads/${username}-${destTitle}-${fields.activityID}${fileExt}`;
+
+    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
+        if (err) { throw err; }
+      
+      
+      
+           params = {Bucket: myBucket, Key: myKey, Body: data };
+      
+           s3.putObject(params, function(err, data) {
+      
+               if (err) {
+      
+                   console.log(err)
+      
+               } else {
+      
+                   console.log("Successfully uploaded data to myBucket/myKey");
+      
+               }
+      
+            });
+      
+      });
 
 })
 
