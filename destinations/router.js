@@ -58,13 +58,24 @@ windowhandler.newpathstat = `${newpathstat}`
 
 
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
-            fs.renameSync(oldpath, newpath);
+            fs.copyFile(oldpath, newpath, function (err) {
+                if (err) throw err;
+                Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
+                .then(activity => {
+                    res.send(activity);
+                })
+                .catch(err => {
+                    res.send(err);
+                })
+            });
 
          } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
 
-
+        //fs has a race condition where it async saves a file to the OS .. fun times
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + 2000);
 
         console.log('newpath file size is: ')
         console.log(fs.statSync(`${windowhandler.newpath}`))
