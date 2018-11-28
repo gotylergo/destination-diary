@@ -33,6 +33,30 @@ let windowhandler = ''
               
 // Upload image on POST
 
+function TylerCopyFile(source, target, cb) {
+    var cbCalled = false;
+  
+    var rd = fs.createReadStream(source);
+    rd.on("error", function(err) {
+      done(err);
+    });
+    var wr = fs.createWriteStream(target);
+    wr.on("error", function(err) {
+      done(err);
+    });
+    wr.on("close", function(ex) {
+      done();
+    });
+    rd.pipe(wr);
+  
+    function done(err) {
+      if (!cbCalled) {
+        cb(err);
+        cbCalled = true;
+      }
+    }
+  }
+
 destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res, windowhandler) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -56,9 +80,9 @@ windowhandler.newpath = `${newpath}`
 windowhandler.newpathstat = `${newpathstat}`
 
 
-        const { COPYFILE_FICLONE_FORCE } = fs.constants;
+        // const { COPYFILE_FICLONE_FORCE } = fs.constants;
         if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
-            fs.copyFile(oldpath, newpath, COPYFILE_FICLONE_FORCE, function (err) {
+            TylerCopyFile(oldpath, newpath, function (err) {
                 if (err) throw err;
                 Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
                 .then(activity => {
