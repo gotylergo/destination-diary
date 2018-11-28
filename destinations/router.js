@@ -42,8 +42,8 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
     form.parse(req, function (err, fields, files) {
         var oldpath = files.file.path;
         let fileExt = `.${files.file.type.slice(6)}`;
-        var newpath = `./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
-        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        var newpath = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}.${fileExt}`;
+        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}.${fileExt}`;
 
 
 //set some global vars
@@ -51,6 +51,7 @@ windowhandler.username = `${req.user.username}`
 windowhandler.destTitle = `${req.params.destTitle}`
 windowhandler.activityID = `${fields.activityID}`
 windowhandler.fileExt = `${fileExt}`
+windowhandler.newpath = `${newpath}`
 
 
 
@@ -69,6 +70,9 @@ windowhandler.fileExt = `${fileExt}`
          } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
+
+        console.log('newpath file size is: ')
+        console.log(fs.statSync(`${newpath}`))
 //it is posting file after this, so race condition error
 //need to set the things and use them below basically 
 
@@ -80,7 +84,7 @@ windowhandler.fileExt = `${fileExt}`
 
     var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
 
-    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`, function (err, data) {
+    mys3fs.readFile(`${windowhandler.newpath}`, function (err, data) {
         if (err) { throw err; }
       
       
