@@ -58,33 +58,38 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
          } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
+
+
+        var myKey = `uploads/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+
+        mys3fs.readFile(`./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
+            if (err) { throw err; }
+          
+          
+          
+               params = {Bucket: myBucket, Key: myKey, Body: data };
+          
+               s3.putObject(params, function(err, data) {
+          
+                   if (err) {
+          
+                       console.log(err)
+          
+                   } else {
+          
+                       console.log("Successfully uploaded data to myBucket/myKey");
+          
+                   }
+          
+                });
+          
+          });
+
+
     });
 
 
-    var myKey = `uploads/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
 
-    mys3fs.readFile(`./public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`, function (err, data) {
-        if (err) { throw err; }
-      
-      
-      
-           params = {Bucket: myBucket, Key: myKey, Body: data };
-      
-           s3.putObject(params, function(err, data) {
-      
-               if (err) {
-      
-                   console.log(err)
-      
-               } else {
-      
-                   console.log("Successfully uploaded data to myBucket/myKey");
-      
-               }
-      
-            });
-      
-      });
 
 })
 
