@@ -75,7 +75,7 @@ windowhandler.newpathstat = `${newpathstat}`
 
         //fs has a race condition where it async saves a file to the OS .. fun times
         var start = new Date().getTime();
-        while (new Date().getTime() < start + 100);
+        while (new Date().getTime() < start + 1000);
 
         console.log('newpath file size is: ')
         console.log(fs.statSync(`${windowhandler.newpath}`))
