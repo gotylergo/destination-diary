@@ -87,8 +87,8 @@ windowhandler.newpathstat = `${newpathstat}`
                 Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
                 .then(activity => {
                     res.send(activity);
-                    console.log('newpath file size is: ')
-                    console.log(fs.statSync(`${windowhandler.newpath}`))
+                    // console.log('newpath file size is: ')
+                    // console.log(fs.statSync(`${windowhandler.newpath}`))
             
                     var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
             
