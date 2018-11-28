@@ -4,3 +4,7 @@ exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL;
 exports.PORT = process.env.PORT;
 exports.JWT_SECRET = process.env.JWT_SECRET;
 exports.JWT_EXPIRY = process.env.JWT_EXPIRY;
+exports.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+exports.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+exports.AWS_DEFAULT_REGION = process.env.AWS_DEFAULT_REGION;
+exports.S3_BUCKET = process.env.S3_BUCKET;
