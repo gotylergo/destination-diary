@@ -130,8 +130,9 @@ mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
 
                 
                 .catch(err => {
-                    res.send(err);
+                    console.log(err)
                     res.send(activity);
+                    
                 })
             });
 
