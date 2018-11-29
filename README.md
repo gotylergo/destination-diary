@@ -8,7 +8,7 @@ Destination Diary is a personal travel book web app that allows users to track t
  - [Node.js](https://nodejs.org/) - JavaScript runtime built on Chrome's V8 JavaScript engine
  - [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
  - [Mongodb](https://www.mongodb.com/) - open-source document database that provides high performance, high availability, and automatic scaling
- - [AWS](aws.amazon.com/s3) - "simple storage service" offered by Amazon Web Services that provides object storage through a web service interface
+ - [AWS S3](aws.amazon.com/s3) - "simple storage service" offered by Amazon Web Services that provides object storage through a web service interface
  - [Passport](https://www.passportjs.org/) - Simple, unobtrusive authentication for Node.js
  - [Chai](https://www.chaijs.com/) - BDD / TDD assertion library
  - [Mocha](https://mochajs.org/) - feature-rich JavaScript test framework
