@@ -2,7 +2,6 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const req = require('request')
 
 const formidable = require('formidable');
 const fs = require('fs');
@@ -21,41 +20,39 @@ destinationsRouter.use(bodyParser.urlencoded({ extended: true })); destinationsR
 
 // S3 Setup
 
-
-
 var AWS = require('aws-sdk');
-var mys3fs =  require('fs');
+var mys3fs = require('fs');
 
 var s3 = new AWS.S3();
 
 
 let windowhandler = ''
-              
+
 // Upload image on POST
 
-function TylerCopyFile(source, target, cb) {
+function CopyFile(source, target, cb) {
     var cbCalled = false;
-  
+
     var rd = fs.createReadStream(source);
-    rd.on("error", function(err) {
-      done(err);
+    rd.on("error", function (err) {
+        done(err);
     });
     var wr = fs.createWriteStream(target);
-    wr.on("error", function(err) {
-      done(err);
+    wr.on("error", function (err) {
+        done(err);
     });
-    wr.on("close", function(ex) {
-      done();
+    wr.on("close", function (ex) {
+        done();
     });
     rd.pipe(wr);
-  
+
     function done(err) {
-      if (!cbCalled) {
-        cb(err);
-        cbCalled = true;
-      }
+        if (!cbCalled) {
+            cb(err);
+            cbCalled = true;
+        }
     }
-  }
+}
 
 destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (req, res, windowhandler) {
     var form = new formidable.IncomingForm();
@@ -65,112 +62,73 @@ destinationsRouter.post('/upload/:destTitle', [jsonParser, jwtAuth], function (r
         console.log(fs.statSync(`${oldpath}`))
         let fileExt = `.${files.file.type.slice(6)}`;
         var newpathbefore = `public/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
-        var newpath = `${newpathbefore}`.replace(/ /g,"-");
+        var newpath = `${newpathbefore}`.replace(/ /g, "-");
         var newpathstat = `img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
-        let newurl = `/img/destinations/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
+        let newurl = `https://s3-us-west-1.amazonaws.com/destination-diary/uploads/${req.user.username}-${req.params.destTitle}-${fields.activityID}${fileExt}`;
 
 
-//set some global vars
-//this aint workin:
-windowhandler.username = `${req.user.username}`
-windowhandler.destTitle = `${req.params.destTitle}`
-windowhandler.activityID = `${fields.activityID}`
-windowhandler.fileExt = `${fileExt}`
-windowhandler.oldpath = `${oldpath}`
-windowhandler.newpath = `${newpath}`
-windowhandler.newpathstat = `${newpathstat}`
+        //set some global vars
+        //this aint workin:
+        windowhandler.username = `${req.user.username}`
+        windowhandler.destTitle = `${req.params.destTitle}`
+        windowhandler.activityID = `${fields.activityID}`
+        windowhandler.fileExt = `${fileExt}`
+        windowhandler.oldpath = `${oldpath}`
+        windowhandler.newpath = `${newpath}`
+        windowhandler.newpathstat = `${newpathstat}`
 
-var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
-            
-mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
-    if (err) { throw err; }
-  
-  
-    
-       let params = {Bucket: 'destination-diary', Key: myKey, Body: data };
-  
-       s3.putObject(params, function(err, data) {
-  
-           if (err) {
-  
-               console.log(err)
-  
-           } else {
-  
-               console.log("Successfully uploaded data to myBucket/myKey");
-  
-           }
-  
-        });
-  
-  });
+        var myKey = `uploads/${windowhandler.username}-${windowhandler.destTitle}-${windowhandler.activityID}${windowhandler.fileExt}`;
 
+        mys3fs.readFile(`${windowhandler.oldpath}`, function (err, data) {
+            if (err) { throw err; }
 
-        // const { COPYFILE_FICLONE_FORCE } = fs.constants;
-        if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
-            TylerCopyFile(oldpath, newpath, function (err) {
+            let params = { Bucket: 'destination-diary', Key: myKey, Body: data, ACL: 'public-read' };
 
-                Activity.findByIdAndUpdate(fields.activityID, {url: newurl}, {new: true})
-                .then(activity => {
-                    res.send(activity);
-                    // console.log('newpath file size is: ')
-                    // console.log(fs.statSync(`${windowhandler.newpath}`))
-            
+            s3.putObject(params, function (err, data) {
 
-            
+                if (err) {
 
-
-
-
-                })
-
-
-
-
-
-                
-                .catch(err => {
                     console.log(err)
-                    res.send(activity);
-                    
-                })
+
+                } else {
+
+                    console.log("Successfully uploaded data to myBucket/myKey");
+
+                }
+
             });
 
-         } else {
+        });
+
+        if (fileExt == ".jpeg" || fileExt == ".jpg" || fileExt == ".png" || fileExt == ".gif") {
+            CopyFile(oldpath, newpath, function (err) {
+
+                Activity.findByIdAndUpdate(fields.activityID, { url: newurl }, { new: true })
+                    .then(activity => {
+                        res.send(activity);
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.send(activity);
+                    })
+            });
+        } else {
             res.status(500).json('The file you sent is not a valid image file. Please choose a jpeg, png, or gif file and try again.');
         }
         console.log('copied file')
-
-      
-
-
-
-//it is posting file after this, so race condition error
-//need to set the things and use them below basically 
-
-
-
     });
-
-
-
-
-
 })
-
-
-
 
 // Get an Activity by it's ID
 
 destinationsRouter.get('/activities/:activityID', jsonParser, (req, res) => {
     Activity.findById(req.params.activityID)
-    .then(activity => {
-        res.send(activity);
-    })
-    .catch(err => {
-        res.send(err);
-    })
+        .then(activity => {
+            res.send(activity);
+        })
+        .catch(err => {
+            res.send(err);
+        })
 })
 
 // Post to create a destination
@@ -279,7 +237,7 @@ destinationsRouter.put('/id/:id', [jsonParser, jwtAuth], (req, res) => {
 destinationsRouter.delete('/id/:id', [jsonParser, jwtAuth], (req, res) => {
     for (let activity of req.body.activities) {
         Activity.findOneAndRemove({ _id: activity.id })
-        .catch(err => res.status(500).send({ message: 'Internal server error.', error: err}));
+            .catch(err => res.status(500).send({ message: 'Internal server error.', error: err }));
     }
     Destination.findOneAndRemove({ _id: req.params.id })
         .then(dest => res.status(204).send(`${req.params.id} deleted.`))
