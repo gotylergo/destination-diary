@@ -1,0 +1,8 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "8020:4000"
+    environment:
+      NODE_ENV: production

@@ -21,7 +21,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "s3fs": "git+https://github.com/RiptideCloud/s3fs.git"
+    "s3fs": "git+https://github.com/TooTallNate/s3fs.git"
   },
   "devDependencies": {
     "chai": "^4.1.2",
