@@ -3,6 +3,14 @@ services:
   web:
     build: .
     ports:
-      - "8020:4000"
+      - ${HOST_PORT}:${CONTAINER_PORT}
+    restart: always
     environment:
       NODE_ENV: production
+      VIRTUAL_HOST: "destinationdiary.globa.one"
+      LETSENCRYPT_HOST: "destinationdiary.globa.one"
+
+networks:
+  default:
+    external:
+      name: proxy
