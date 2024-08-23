@@ -3,7 +3,7 @@ Destination Diary is a personal travel book web app that allows users to track t
 
 [Live demo](https://destinationdiary.globa.one/)
 
-![Screenshot](https://tylerjustyn.dev/img/destinationdiary.png)
+![Screenshot](public/img/screenshot.png)
 
 ## Technologies
  - [Node.js](https://nodejs.org/) - JavaScript runtime built on Chrome's V8 JavaScript engine
@@ -16,4 +16,4 @@ Destination Diary is a personal travel book web app that allows users to track t
  - [jQuery](https://jquery.com/) - cross-platform JavaScript library designed to simplify the client-side scripting of HTML
 
 ## Who are you?
-I'm Tyler! Check out my portfolio: https://tylerjustyn.dev
+I'm Tyler! Check out my portfolio: https://tylerj.dev
