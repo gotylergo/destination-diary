@@ -1,13 +1,12 @@
 services:
   web:
     build: .
-    ports:
-      - ${HOST_PORT}:${CONTAINER_PORT}
-    restart: always
+    container_name: destination-diary
+    restart: unless-stopped
     environment:
       NODE_ENV: production
-      VIRTUAL_HOST: "destinationdiary.globa.one"
-      LETSENCRYPT_HOST: "destinationdiary.globa.one"
+    labels:
+      com.centurylinklabs.watchtower.enable: false
 
 networks:
   default:
