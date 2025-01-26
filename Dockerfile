@@ -1,12 +1,12 @@
 FROM node:18-alpine
 
-WORKDIR .
+WORKDIR $WORKDIR
 
 COPY package.json ./
 
 COPY . .
 
-EXPOSE 4000
+EXPOSE $PORT
 
 RUN npm install
 
